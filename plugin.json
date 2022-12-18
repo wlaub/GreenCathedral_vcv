@@ -1,211 +1,26 @@
 {
-  "slug": "TechTechTechnologies",
-  "name": "TechTech Technologies",
-  "version": "2.4.1",
+  "slug": "GreenCathedral",
+  "name": "Green Cathedral",
+  "version": "2.0.0",
   "license": "CC0-1.0",
   "brand": "TechTech Technologies",
   "author": "William Laub",
   "authorEmail": "",
   "authorUrl": "",
   "pluginUrl": "",
-  "manualUrl": "https://github.com/wlaub/vcv/blob/main/README.md",
-  "sourceUrl": "https://github.com/wlaub/vcv",
+  "manualUrl": "https://github.com/wlaub/GreenCathedral_vcv/blob/main/README.md",
+  "sourceUrl": "https://github.com/wlaub/GreenCathedral_vcv",
   "donateUrl": "",
   "modules": [
     {
-      "slug": "DAC",
-      "name": "DAC",
-      "description": "Bitwise DAC",
-      "tags": [
-        "digital",
-        "quantizer",
-        "utility"
-      ]
-    },
-    {
-      "slug": "mDAC",
-      "name": "mDAC",
-      "description": "Text to voltage converter",
-      "tags": [
-        "digital",
-        "quanizer",
-        "utility"
-      ]
-    },
-    {
-      "slug": "Prometheus",
-      "name": "Prometheus",
-      "description": "LFSR",
-      "tags": [
-        "DIGITAL",
-        "logic",
-        "noise",
-        "oscillator",
-        "sequencer"
-      ]
-    },
-    {
-      "slug": "Vulcan",
-      "name": "Vulcan",
-      "description": "Mask-based sequence generator",
-      "tags": [
-        "DIGITAL",
-        "LOGIC",
-        "SEQUENCER"
-      ]
-    },
-    {
-      "slug": "Sisyphus",
-      "name": "Sisyphus",
-      "description": "Looping buffer",
-      "tags": [
-        "SAMPLER",
-        "UTILITY"
-      ]
-    },
-    {
-      "slug": "Polyphemus",
-      "name": "Polyphemus",
-      "description": "3-Pole Pair IIR filter with angle and radius control",
-      "tags": [
-        "VCF"
-      ]
-    },
-    {
-      "slug": "Ouroboros",
-      "name": "Ouroboros",
-      "description": "Oscillator FM feedback loop",
-      "tags": [
-        "VCO"
-      ]
-    },
-    {
-      "slug": "Odysseus",
-      "name": "Odysseus (WIP)",
-      "description": "Random Walk Generator",
-      "tags": [
-        "UTILITY",
-        "FUNCTION_GENERATOR",
-        "NOISE",
-        "SLEW_LIMITER",
-        "LFO"
-      ]
-    },
-    {
-      "slug": "Mneme",
-      "name": "Mneme (WIP)",
-      "description": "Delay",
-      "tags": [
-        "DELAY"
-      ]
-    },
-    {
-      "slug": "Achilles",
-      "name": "Achilles (WIP)",
-      "description": "Karplus-Strong toolkit",
-      "tags": [
-        "DELAY",
-        "NOISE",
-        "VCF",
-        "ENVELOPE_GENERATOR"
-      ]
-    },
-    {
-      "slug": "QMod",
-      "name": "QMod",
-      "description": "4x Quadrature Modulators",
-      "tags": [
-        "Mixer",
-        "Quad",
-        "VCO"
-      ]
-    },
-    {
-      "slug": "Convo",
-      "name": "Convo (WIP)",
-      "description": "FIR filter sampler",
-      "tags": [
-        "Effect"
-      ]
-    },
-    {
       "slug": "Polyphemus2",
-      "name": "Polyphemus II (WIP)",
+      "name": "Polyphemus II",
       "description": "Single 1-10'th order real pole VCF with v/oct and envelope inputs",
       "tags": [
         "low pass gate",
         "quad",
         "vcf",
         "polyphonic"
-      ]
-    },
-    {
-      "slug": "Prometheus2",
-      "name": "Prometheus II (WIP)",
-      "description": "LFSR Oscillator",
-      "tags": [
-        "vco",
-        "noise",
-        "logic"
-      ]
-    },
-    {
-      "slug": "LatComp",
-      "name": "Latency Compensator",
-      "description": "Ues a loopback to measure latency and provides multiple delays with the measured latency for synchronizing with external hardware through a high-latency interface.",
-      "tags": [
-        "delay",
-        "utility",
-        "external"
-      ]
-    },
-    {
-      "slug": "MetadataMain",
-      "name": "Metadata Main",
-      "description": "Used to add custom description metadata to a patch file for use by other programs.",
-      "tags": []
-    },
-    {
-      "slug": "MetadataFiles",
-      "name": "Metadata Files",
-      "description": "Used to add metadata containing listings of certain kinds of files to a patch file for use by other programs.",
-      "tags": []
-    },
-    {
-      "slug": "DecayTimer",
-      "name": "Decay Timer",
-      "description": "Comparator with hysteresis and pulse duration time",
-      "tags": [
-        "Digital",
-        "Utility"
-      ]
-    },
-    {
-      "slug": "TiaI",
-      "name": "Tia I",
-      "description": "7-channel crossfading multiplexer",
-      "tags": [
-        "Switch",
-        "Utility",
-        "Controller"
-      ]
-    },
-    {
-      "slug": "TiaIExpander",
-      "name": "Tia I Expander",
-      "description": "Additional channels for Tia I",
-      "tags": [
-        "Switch",
-        "Utility",
-        "Expander"
-      ]
-    },
-    {
-      "slug": "MatI",
-      "name": "Mat I",
-      "description": "Multichannel Fixed Biquad Filter Bank",
-      "tags": [
-        "Filter"
       ]
     },
     {
@@ -217,8 +32,8 @@
       ]
     },
     {
-      "slug": "Sixty",
-      "name": "-60",
+      "slug": "SixtyI",
+      "name": "Sixty I",
       "description": "Cobalt I expander",
       "tags": [
         "low-frequency oscillator",
@@ -226,24 +41,14 @@
       ]
     },
     {
-      "slug": "Once",
-      "name": "Once",
+      "slug": "OnceI",
+      "name": "Once I",
       "description": "Button press synchronizer",
       "tags": [
         "utility",
         "digital"
       ]
-    },
-    {
-      "slug": "LachesisI",
-      "name": "Lachesis I",
-      "description": "Counter module with count display and analog output",
-      "tags": [
-        "utility",
-        "digital",
-        "visual"
-      ]
     }
- 
+
   ]
 }

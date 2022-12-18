@@ -1,4 +1,4 @@
-#include "TechTechTechnologies.hpp"
+#include "GreenCathedral.hpp"
 
 //The cutoff frequency gain
 #define Hc .707

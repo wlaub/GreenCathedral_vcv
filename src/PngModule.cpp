@@ -1,22 +1,24 @@
 #include "PngModule.hpp"
-#include "TechTechTechnologies.hpp"
+#include "GreenCathedral.hpp"
 
 MyPanel::MyPanel(std::string label, std::string path) {
+    path = "res/"+path;
 
+    this->label = label;
+    this->path = path;
     if(path.find("svg") != std::string::npos)
     {
         type = ImageType::SVG;
-
         svg_handle = nsvgParseFromFile(
                 asset::plugin(pluginInstance, path).c_str(), 
                 "px", SVG_DPI);
-
         width = svg_handle->width;
     }
     else
     {
         type = ImageType::PNG;
     }
+
 }
 
 float MyPanel::get_width()
@@ -267,7 +269,7 @@ std::string PngModuleWidget::get_panel_definitions_path()
 
 std::string PngModuleWidget::get_panel_settings_path()
 {
-    std::string json_path = asset::user("ttt_") + slug + ".json";
+    std::string json_path = asset::user("ttt_gc_") + slug + ".json";
     return json_path;
 }
 
@@ -340,8 +342,6 @@ void PngModuleWidget::load_panels_from_json()
     json_error_t error;
     json_t* definitions_root = json_loadf(fp, 0, &error);
 
-    std::fclose(fp);
-
     if(!definitions_root)
     {
         std::string message = string::f("Failed to load %s: %s %d:%d %s", json_path.c_str(), error.source, error.line, error.column, error.text);
@@ -349,6 +349,8 @@ void PngModuleWidget::load_panels_from_json()
         return;
     }
     
+    std::fclose(fp);
+
     json_t* panels = json_object_get(definitions_root, "panels");
     const char* default_label = json_string_value(json_object_get(definitions_root, "default"));
     const char* label_panel_path = json_string_value(json_object_get(definitions_root, "labels"));

@@ -1,4 +1,9 @@
 
+### 2.0.0
+
+* Fork from dev plugin
+  * Remove the cruft
+
 ### 2.4.1
 
 * Fixing build issues on github

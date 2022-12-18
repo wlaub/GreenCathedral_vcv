@@ -2,7 +2,7 @@
 #include "PngModule.hpp"
 #include <numeric>
 
-struct Sixty : PngModule {
+struct SixtyI : PngModule {
     enum ParamId {
         TRI_PARAM,
         RC_PARAM, //Raised Cosine
@@ -34,7 +34,7 @@ struct Sixty : PngModule {
     const double exp_max = exp(exp_a);
     const double exp_min = exp(-exp_a);
 
-    Sixty() {
+    SixtyI() {
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
         configParam(TRI_PARAM, 0.f, 1.f, 0.5f, "Symmetry");
         configParam(RC_PARAM, 0.f, 1.f, 0.5f, "Rolloff");
@@ -245,10 +245,10 @@ struct Sixty : PngModule {
 #define GRIDY(y) 15.24*(y)+3.28
 #define GRID(x,y) GRIDX(x), GRIDY(y)
 
-struct SixtyWidget : PngModuleWidget {
+struct SixtyIWidget : PngModuleWidget {
 
     void appendContextMenu(Menu* menu) override {
-            Sixty* module = dynamic_cast<Sixty*>(this->module);
+            SixtyI* module = dynamic_cast<SixtyI*>(this->module);
 
             menu->addChild(new MenuEntry);
 
@@ -256,10 +256,10 @@ struct SixtyWidget : PngModuleWidget {
 
         }
 
-    SixtyWidget(Sixty* module) {
+    SixtyIWidget(SixtyI* module) {
         setModule(module);
 
-        init_panels("Sixty");
+        init_panels("SixtyI");
 
         addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
         addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
@@ -267,42 +267,42 @@ struct SixtyWidget : PngModuleWidget {
         addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
         addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(Vec(GRID(1,1))), module, Sixty::TRI_PARAM));
+            mm2px(Vec(GRID(1,1))), module, SixtyI::TRI_PARAM));
         addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(Vec(GRID(1,2))), module, Sixty::DECAY_PARAM));
+            mm2px(Vec(GRID(1,2))), module, SixtyI::DECAY_PARAM));
 
         addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(Vec(GRID(1,3))), module, Sixty::RC_PARAM));
+            mm2px(Vec(GRID(1,3))), module, SixtyI::RC_PARAM));
         addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(Vec(GRID(1,4))), module, Sixty::TRAP_PARAM));
+            mm2px(Vec(GRID(1,4))), module, SixtyI::TRAP_PARAM));
 
         addOutput(createOutputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(2,1))), module, Sixty::TRI_OUTPUT));
+            mm2px(Vec(GRID(2,1))), module, SixtyI::TRI_OUTPUT));
         addOutput(createOutputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(2,2))), module, Sixty::DECAY_OUTPUT));
+            mm2px(Vec(GRID(2,2))), module, SixtyI::DECAY_OUTPUT));
 
         addOutput(createOutputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(2,3))), module, Sixty::RC_OUTPUT));
+            mm2px(Vec(GRID(2,3))), module, SixtyI::RC_OUTPUT));
         addOutput(createOutputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(2,4))), module, Sixty::TRAP_OUTPUT));
+            mm2px(Vec(GRID(2,4))), module, SixtyI::TRAP_OUTPUT));
 
 
         addInput(createInputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(1,5))), module, Sixty::EXP_INPUT));
+            mm2px(Vec(GRID(1,5))), module, SixtyI::EXP_INPUT));
         addInput(createInputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(1,6))), module, Sixty::INVERT_INPUT));
+            mm2px(Vec(GRID(1,6))), module, SixtyI::INVERT_INPUT));
 
         addOutput(createOutputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(2,5))), module, Sixty::EXP_OUTPUT));
+            mm2px(Vec(GRID(2,5))), module, SixtyI::EXP_OUTPUT));
         addOutput(createOutputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(2,6))), module, Sixty::INVERT_OUTPUT));
+            mm2px(Vec(GRID(2,6))), module, SixtyI::INVERT_OUTPUT));
 
         addParam(createParamCentered<RoundBlackSnapKnob>(
-            mm2px(Vec(GRID(1,7))), module, Sixty::CLK_PARAM));
+            mm2px(Vec(GRID(1,7))), module, SixtyI::CLK_PARAM));
         addOutput(createOutputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(2,7))), module, Sixty::CLK_OUTPUT));
+            mm2px(Vec(GRID(2,7))), module, SixtyI::CLK_OUTPUT));
     }
 };
 
 
-Model* modelSixty = createModel<Sixty, SixtyWidget>("Sixty");
+Model* modelSixtyI = createModel<SixtyI, SixtyIWidget>("SixtyI");

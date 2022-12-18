@@ -1,4 +1,4 @@
-#include "TechTechTechnologies.hpp"
+#include "GreenCathedral.hpp"
 #include "PngModule.hpp"
 #include <numeric>
 
@@ -84,7 +84,7 @@ struct EdgeMode{
 
 };
 
-struct Once : PngModule {
+struct OnceI : PngModule {
     enum ParamId {
         ENABLE_PARAM,
         BUTTON_PARAM,
@@ -118,7 +118,7 @@ struct Once : PngModule {
     struct ButtonMode button_mode;
     struct EdgeMode edge_mode;
 
-    Once() {
+    OnceI() {
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 
         configButton(ENABLE_PARAM, "Enable");
@@ -350,14 +350,14 @@ struct Once : PngModule {
 #define GRIDY(y) 15.24*(y)+3.28
 #define GRID(x,y) GRIDX(x), GRIDY(y)
 
-struct OnceWidget : PngModuleWidget {
+struct OnceIWidget : PngModuleWidget {
 
-    void button_mode_menu(Menu* menu, Once* module)
+    void button_mode_menu(Menu* menu, OnceI* module)
     {
             menu->addChild(createMenuLabel("Button Mode"));
 
             struct ModeItem : MenuItem {
-                Once* module;
+                OnceI* module;
                 int mode;
                 void onAction(const event::Action& e) override {
                     module->button_mode.mode = mode;
@@ -384,12 +384,12 @@ struct OnceWidget : PngModuleWidget {
  
     }
 
-    void edge_mode_menu(Menu* menu, Once* module)
+    void edge_mode_menu(Menu* menu, OnceI* module)
     {
             menu->addChild(createMenuLabel("Clock Mode"));
 
             struct ModeItem : MenuItem {
-                Once* module;
+                OnceI* module;
                 int mode;
                 void onAction(const event::Action& e) override {
                     module->edge_mode.mode = mode;
@@ -418,7 +418,7 @@ struct OnceWidget : PngModuleWidget {
 
 
     void appendContextMenu(Menu* menu) override {
-            Once* module = dynamic_cast<Once*>(this->module);
+            OnceI* module = dynamic_cast<OnceI*>(this->module);
 
             menu->addChild(new MenuEntry);
 
@@ -429,10 +429,10 @@ struct OnceWidget : PngModuleWidget {
         }
 
 
-    OnceWidget(Once* module) {
+    OnceIWidget(OnceI* module) {
         setModule(module);
 
-        init_panels("Once");
+        init_panels("OnceI");
 
         addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
         addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
@@ -444,28 +444,28 @@ struct OnceWidget : PngModuleWidget {
         for(int i = 0; i < N; ++i)
         {
             addParam(createParamCentered<LEDBezel>(
-                    mm2px(Vec(GRID(1, i+2))), module, Once::BUTTON_PARAM+i));
+                    mm2px(Vec(GRID(1, i+2))), module, OnceI::BUTTON_PARAM+i));
 
             addChild(createLightCentered<LEDBezelLight<RedGreenBlueLight>>(
-                    mm2px(Vec(GRID(1, i+2))), module, Once::BUTTON_LIGHT+3*i));
+                    mm2px(Vec(GRID(1, i+2))), module, OnceI::BUTTON_LIGHT+3*i));
 
             addOutput(createOutputCentered<PJ301MPort>(
-                mm2px(Vec(GRID(2, i+2))), module, Once::GATE_OUTPUT+i));
+                mm2px(Vec(GRID(2, i+2))), module, OnceI::GATE_OUTPUT+i));
 
         }
 
         addInput(createInputCentered<PJ301MPort>(
-            mm2px(Vec(GRID(1,1))), module, Once::CLK_INPUT));
+            mm2px(Vec(GRID(1,1))), module, OnceI::CLK_INPUT));
 
         addParam(createParamCentered<LEDBezel>(
-                mm2px(Vec(GRID(2, 1))), module, Once::ENABLE_PARAM));
+                mm2px(Vec(GRID(2, 1))), module, OnceI::ENABLE_PARAM));
 
         addChild(createLightCentered<LEDBezelLight<RedGreenBlueLight>>(
-                mm2px(Vec(GRID(2, 1))), module, Once::ENABLE_LIGHT));
+                mm2px(Vec(GRID(2, 1))), module, OnceI::ENABLE_LIGHT));
 
 
     }
 };
 
 
-Model* modelOnce = createModel<Once, OnceWidget>("Once");
+Model* modelOnceI = createModel<OnceI, OnceIWidget>("OnceI");
