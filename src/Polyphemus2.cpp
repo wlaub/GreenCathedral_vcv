@@ -205,6 +205,32 @@ struct OrderKnob : RoundBlackKnob {
 
 
 struct Polyphemus2Widget : PngModuleWidget {
+
+    void draw(const DrawArgs& args)
+    {
+//        PngModuleWidget::draw(args);
+
+        nvgSave(args.vg);
+        nvgBeginPath(args.vg);
+
+        float rmin = 7.62;
+        float cx = box.size.x/2;
+
+
+        nvgArc(args.vg, cx, 50, 100, 0, M_PI, NVG_CCW);
+//        nvgArcTo(args.vg, 0, 50, 50, 50, 100);
+//        nvgCircle(args.vg, 25, 25, 100);
+
+        nvgStrokeColor(args.vg, nvgRGB(0,0,0));
+        nvgStrokeWidth(args.vg, 2);
+        nvgStroke(args.vg);
+
+        nvgClosePath(args.vg);
+        nvgRestore(args.vg);
+               
+
+    } 
+
 	Polyphemus2Widget(Polyphemus2 *module) {
 		setModule(module);
 

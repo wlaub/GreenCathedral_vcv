@@ -1,12 +1,11 @@
 
-### 2.0.1
-
-* Remove redundant sections on Polyphemus II
-
 ### 2.0.0
 
 * Fork from dev plugin
   * Remove the cruft
+* Remove redundant sections on Polyphemus II
+* Rework Polyphemus II panel
+
 
 ### 2.4.1
 

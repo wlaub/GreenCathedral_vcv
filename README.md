@@ -1,5 +1,7 @@
 # TechTech Technologies Green Cathedral
 
+Note: this plugin is not yet ready for release.
+
 ## TODO
 
 * Rethink Tia design
@@ -13,6 +15,7 @@
 * Cobalt I + Sixty I
 * Once I
 * Tia/Mat I (maybe)
+* Labels and panels for all of the above
 
 ## Panels
 
