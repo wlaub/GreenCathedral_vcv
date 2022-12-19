@@ -225,7 +225,7 @@ struct Polyphemus2Widget : PngModuleWidget {
     {
         PngModuleWidget::draw(args);
 
-        float alpha = 0;
+        float alpha = 1;
         if(module)
         {
             alpha = ((Polyphemus2*)module)->env_alpha;
