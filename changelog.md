@@ -1,4 +1,8 @@
 
+### 2.0.1
+
+* Remove redundant sections on Polyphemus II
+
 ### 2.0.0
 
 * Fork from dev plugin
