@@ -254,7 +254,7 @@ struct Polyphemus2Widget : PngModuleWidget {
 
         nvgSave(args.vg);
 
-        float pupil_h = eye_stroke/2;
+        float pupil_h = eye_stroke/4;
         //Draw outline
         nvgBeginPath(args.vg);
         if(alpha <= 0)
@@ -267,7 +267,7 @@ struct Polyphemus2Widget : PngModuleWidget {
             float a = alpha*M_PI/2;
             float h = eye_radius/tan(a);
             float r = sqrt(ewsq+h*h*4)/2;
-            pupil_h = r-h+eye_stroke/2;
+            pupil_h = r-h+eye_stroke/4;
  
             nvgArc(args.vg, eye_x, eye_y+h, r, 3*M_PI/2-a, 3*M_PI/2+a, NVG_CW);
             nvgArc(args.vg, eye_x, eye_y-h, r, M_PI/2-a, M_PI/2+a, NVG_CW);
@@ -277,7 +277,7 @@ struct Polyphemus2Widget : PngModuleWidget {
             float a = (2-alpha)*M_PI/2;
             float h = eye_radius/tan(a);
             float r = sqrt(ewsq+h*h*4)/2;
-            pupil_h = r-h+eye_stroke/2;
+            pupil_h = r-h+eye_stroke/4;
 
             nvgArc(args.vg, eye_x-h, eye_y, r, 2*M_PI-a, a, NVG_CW);
             nvgArc(args.vg, eye_x+h, eye_y, r, M_PI-a, M_PI+a, NVG_CW);
