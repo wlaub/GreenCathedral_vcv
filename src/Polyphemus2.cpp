@@ -195,7 +195,7 @@ struct Polyphemus2 : PngModule {
 #define GRIDY(y) 15.24*(y)+3.28
 #define GRID(x,y) Vec(GRIDX(x), GRIDY(y))
 
-struct OrderKnob : RoundBigBlackKnob {
+struct OrderKnob : RoundBlackKnob {
     OrderKnob() {
         snap = true;
         minAngle = -M_PI*6/7;
@@ -219,18 +219,17 @@ struct Polyphemus2Widget : PngModuleWidget {
        addParam(createParamCentered<RoundBlackKnob>(
             mm2px(GRID(3,1.5)), module, Polyphemus2::GAIN_PARAM));
        addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(GRID(0,1.5)), module, Polyphemus2::KNEE_PARAM));
+            mm2px(GRID(1.5,1)), module, Polyphemus2::KNEE_PARAM));
+        addParam(createParamCentered<RoundBlackKnob>(
+            mm2px(GRID(3,3)), module, Polyphemus2::ENVP_PARAM));
 
         addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(GRID(3,3.5)), module, Polyphemus2::ENVP_PARAM));
-        addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(GRID(0,3.5)), module, Polyphemus2::VOCTP_PARAM));
-
+            mm2px(GRID(0,3)), module, Polyphemus2::VOCTP_PARAM));
         addParam(createParamCentered<OrderKnob>(
-            mm2px(GRID(1.5,2)), module, Polyphemus2::ORDER_PARAM));
+            mm2px(GRID(0,1.5)), module, Polyphemus2::ORDER_PARAM));
 
-        addInput(createInputCentered<PJ301MPort>(mm2px(GRID(1,4)), module, Polyphemus2::VOCT0_INPUT));
-        addInput(createInputCentered<PJ301MPort>(mm2px(GRID(2,4)), module, Polyphemus2::ENV_INPUT));
+        addInput(createInputCentered<PJ301MPort>(mm2px(GRID(0.5,4)), module, Polyphemus2::VOCT0_INPUT));
+        addInput(createInputCentered<PJ301MPort>(mm2px(GRID(2.5,4)), module, Polyphemus2::ENV_INPUT));
 
         addInput(createInputCentered<PJ301MPort>(mm2px(GRID(0.5,5)), module, Polyphemus2::IN0_INPUT));
         addInput(createInputCentered<PJ301MPort>(mm2px(GRID(0.5,6)), module, Polyphemus2::IN1_INPUT));
