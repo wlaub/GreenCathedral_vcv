@@ -8,6 +8,7 @@
 
 #define MAX_CHANNELS 16
 
+#define ENV_MAX 19.f
 
 struct PoleFilter {
 
@@ -54,11 +55,13 @@ struct Polyphemus2 : PngModule {
     float rvals[MAX_CHANNELS] = {0};
     float kvals[MAX_CHANNELS] = {0};
 
+    float env_alpha = 0; //0 at 0, 0.5 at knee, 1 at max
+
 	Polyphemus2() {
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
         configParam(ORDER_PARAM, 1.f, Nmax , 1.f, "Pole Order");
         configParam(ENVP_PARAM, 0.f, 2.f, 1.f, "Envelope Gain");
-        configParam(GAIN_PARAM, 0.f, 19.f, 1.f, "Frequency gain above knee");
+        configParam(GAIN_PARAM, 0.f, ENV_MAX, 1.f, "Frequency gain above knee");
         configParam(KNEE_PARAM, 0.f, 10.f, 5.f, "Envelope knee level", " V");
         configParam(VOCTP_PARAM, -54.f, 54.f, 0.f, "Cutoff frequency", " Hz", dsp::FREQ_SEMITONE, dsp::FREQ_C4);
 
@@ -125,6 +128,7 @@ struct Polyphemus2 : PngModule {
             float N = params[ORDER_PARAM].getValue();
 
             float knee = params[KNEE_PARAM].getValue()/10.f;
+            float max_alpha = 0;
             for(int c = 0; c < clamp_channels; ++c)
             {
                 int ec = std::min(c,env_channels-1);
@@ -143,6 +147,10 @@ struct Polyphemus2 : PngModule {
                     {
                         t = 1+(t-knee)/(1-knee)*params[GAIN_PARAM].getValue();
                     }
+                    if(t > max_alpha )
+                    {
+                        max_alpha = t;
+                    }
                 }
 
                 float pitch = params[VOCTP_PARAM].getValue()/12.f;
@@ -154,6 +162,7 @@ struct Polyphemus2 : PngModule {
                 rvals[c] = get_r(wc, N);
                 kvals[c] = get_k(rvals[c], N);
             }
+            env_alpha = max_alpha;
 
 //            printf("%f: %f, %f\n", wc, r, k);
             for(int j = 0; j < 3; ++j)
@@ -206,26 +215,84 @@ struct OrderKnob : RoundBlackKnob {
 
 struct Polyphemus2Widget : PngModuleWidget {
 
+    float eye_radius = mm2px(7.62);
+    float eye_x = 0; //Set to half box size in constructor
+    float eye_y = mm2px(41.38);
+    float eye_stroke = 2;
+    float ewsq = eye_radius*eye_radius*4;
+
     void draw(const DrawArgs& args)
     {
-//        PngModuleWidget::draw(args);
+        PngModuleWidget::draw(args);
+
+        float alpha = 0;
+        if(module)
+        {
+            alpha = ((Polyphemus2*)module)->env_alpha;
+        }
+
+        //alpha goes 0 -> 2 -> 0
+        float over = 0;
+        if(alpha > 4)
+        {
+            alpha = 4*modf(alpha/4, &over);
+        }
+        if(alpha > 2)
+        {
+            alpha = 4-alpha;
+        }
+
+        //Normalize 0 to 1       
+        float color_scale = over/floor(ENV_MAX/4);
+        NVGcolor color = nvgRGBf(color_scale,0,0);
 
         nvgSave(args.vg);
+
+        //Draw pupil
         nvgBeginPath(args.vg);
+        nvgCircle(args.vg, eye_x, eye_y, eye_stroke/2);
+        nvgFillColor(args.vg, color);
+        nvgFill(args.vg);
+        nvgClosePath(args.vg);
 
-        float rmin = 7.62;
-        float cx = box.size.x/2;
+        //Draw outline
+        nvgBeginPath(args.vg);
+        if(alpha <= 0)
+        {   //Horizontal line
+            nvgMoveTo(args.vg, eye_x-eye_radius, eye_y);
+            nvgLineTo(args.vg, eye_x+eye_radius, eye_y);
+        }
+        else if(alpha <= 1)
+        {   //Horizontal Open
+            float a = alpha*M_PI/2;
+            float h = eye_radius/tan(a);
+            float r = sqrt(ewsq+h*h*4)/2;
+ 
+            nvgArc(args.vg, eye_x, eye_y+h, r, 3*M_PI/2-a, 3*M_PI/2+a, NVG_CW);
+            nvgArc(args.vg, eye_x, eye_y-h, r, M_PI/2-a, M_PI/2+a, NVG_CW);
+        }
+        else if(alpha < 2)
+        {   //Vertical Open
+            float a = (2-alpha)*M_PI/2;
+            float h = eye_radius/tan(a);
+            float r = sqrt(ewsq+h*h*4)/2;
+ 
+            nvgArc(args.vg, eye_x-h, eye_y, r, 2*M_PI-a, a, NVG_CW);
+            nvgArc(args.vg, eye_x+h, eye_y, r, M_PI-a, M_PI+a, NVG_CW);
+        }
+        else
+        {   //Vertical Line
+            nvgMoveTo(args.vg, eye_x, eye_y-eye_radius);
+            nvgLineTo(args.vg, eye_x, eye_y+eye_radius);
+        }
 
-
-        nvgArc(args.vg, cx, 50, 100, 0, M_PI, NVG_CCW);
-//        nvgArcTo(args.vg, 0, 50, 50, 50, 100);
-//        nvgCircle(args.vg, 25, 25, 100);
-
-        nvgStrokeColor(args.vg, nvgRGB(0,0,0));
-        nvgStrokeWidth(args.vg, 2);
+        nvgLineJoin(args.vg, NVG_BEVEL);
+        nvgStrokeColor(args.vg, color);
+        nvgStrokeWidth(args.vg, eye_stroke);
         nvgStroke(args.vg);
 
         nvgClosePath(args.vg);
+
         nvgRestore(args.vg);
                
 
@@ -235,6 +302,7 @@ struct Polyphemus2Widget : PngModuleWidget {
 		setModule(module);
 
         init_panels("Polyphemus2");
+        eye_x = box.size.x/2;
 
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
