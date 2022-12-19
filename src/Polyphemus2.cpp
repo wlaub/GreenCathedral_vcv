@@ -321,18 +321,20 @@ struct Polyphemus2Widget : PngModuleWidget {
         }
         else
         {
+            float line_h = eye_radius/2;
             if(alpha < 1)
             {
-                nvgMoveTo(args.vg, eye_x, eye_y+pupil_h);
-                nvgLineTo(args.vg, eye_x, eye_y-pupil_h);
+                line_h = std::min(pupil_h, line_h);
+                nvgMoveTo(args.vg, eye_x, eye_y+line_h);
+                nvgLineTo(args.vg, eye_x, eye_y-line_h);
             }
             else
             {
-                nvgMoveTo(args.vg, eye_x, eye_y+eye_radius);
-                nvgLineTo(args.vg, eye_x, eye_y-eye_radius);
+                nvgMoveTo(args.vg, eye_x, eye_y+line_h);
+                nvgLineTo(args.vg, eye_x, eye_y-line_h);
             }
             nvgStrokeColor(args.vg, color);
-            nvgStrokeWidth(args.vg, eye_stroke);
+            nvgStrokeWidth(args.vg, eye_stroke/2);
             nvgStroke(args.vg);
 
 
