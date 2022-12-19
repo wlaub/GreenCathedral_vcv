@@ -233,9 +233,15 @@ struct Polyphemus2Widget : PngModuleWidget {
 
         //alpha goes 0 -> 2 -> 0
         float over = 0;
+        float _;
+        if(alpha > 2)
+        {
+            over = floor(alpha/2);
+        }
         if(alpha > 4)
         {
-            alpha = 4*modf(alpha/4, &over);
+            
+            alpha = 4*modf(alpha/4, &_);
         }
         if(alpha > 2)
         {
@@ -243,18 +249,12 @@ struct Polyphemus2Widget : PngModuleWidget {
         }
 
         //Normalize 0 to 1       
-        float color_scale = over/floor(ENV_MAX/4);
+        float color_scale = over/floor(ENV_MAX/2);
         NVGcolor color = nvgRGBf(color_scale,0,0);
 
         nvgSave(args.vg);
 
-        //Draw pupil
-        nvgBeginPath(args.vg);
-        nvgCircle(args.vg, eye_x, eye_y, eye_stroke/2);
-        nvgFillColor(args.vg, color);
-        nvgFill(args.vg);
-        nvgClosePath(args.vg);
-
+        float pupil_h = eye_stroke/2;
         //Draw outline
         nvgBeginPath(args.vg);
         if(alpha <= 0)
@@ -267,6 +267,7 @@ struct Polyphemus2Widget : PngModuleWidget {
             float a = alpha*M_PI/2;
             float h = eye_radius/tan(a);
             float r = sqrt(ewsq+h*h*4)/2;
+            pupil_h = r-h+eye_stroke/2;
  
             nvgArc(args.vg, eye_x, eye_y+h, r, 3*M_PI/2-a, 3*M_PI/2+a, NVG_CW);
             nvgArc(args.vg, eye_x, eye_y-h, r, M_PI/2-a, M_PI/2+a, NVG_CW);
@@ -276,7 +277,8 @@ struct Polyphemus2Widget : PngModuleWidget {
             float a = (2-alpha)*M_PI/2;
             float h = eye_radius/tan(a);
             float r = sqrt(ewsq+h*h*4)/2;
- 
+            pupil_h = r-h+eye_stroke/2;
+
             nvgArc(args.vg, eye_x-h, eye_y, r, 2*M_PI-a, a, NVG_CW);
             nvgArc(args.vg, eye_x+h, eye_y, r, M_PI-a, M_PI+a, NVG_CW);
         }
@@ -292,6 +294,50 @@ struct Polyphemus2Widget : PngModuleWidget {
         nvgStroke(args.vg);
 
         nvgClosePath(args.vg);
+
+        //Draw pupil
+        nvgBeginPath(args.vg);
+        if(over == 0)
+        {
+ 
+            nvgCircle(args.vg, eye_x, eye_y, eye_stroke*2);
+            if(alpha < 1 )
+            {
+                nvgScissor(args.vg, 
+                        eye_x-eye_radius/2, eye_y-pupil_h, 
+                        eye_radius, pupil_h*2
+                                );
+            }
+            else
+            {
+                nvgScissor(args.vg, 
+                        eye_x-pupil_h, eye_y-eye_radius/2, 
+                        pupil_h*2, eye_radius
+                                );
+            }
+            nvgFillColor(args.vg, color);
+            nvgFill(args.vg);
+            nvgClosePath(args.vg);
+        }
+        else
+        {
+            if(alpha < 1)
+            {
+                nvgMoveTo(args.vg, eye_x, eye_y+pupil_h);
+                nvgLineTo(args.vg, eye_x, eye_y-pupil_h);
+            }
+            else
+            {
+                nvgMoveTo(args.vg, eye_x, eye_y+eye_radius);
+                nvgLineTo(args.vg, eye_x, eye_y-eye_radius);
+            }
+            nvgStrokeColor(args.vg, color);
+            nvgStrokeWidth(args.vg, eye_stroke);
+            nvgStroke(args.vg);
+
+
+        }
+
 
         nvgRestore(args.vg);
                
