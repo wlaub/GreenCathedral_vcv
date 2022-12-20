@@ -484,20 +484,25 @@ struct Polyphemus2Widget : PngModuleWidget {
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 
-       addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(GRID(3,1.5)), module, Polyphemus2::GAIN_PARAM));
-       addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(GRID(1.5,1)), module, Polyphemus2::KNEE_PARAM));
         addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(GRID(3,3)), module, Polyphemus2::ENVP_PARAM));
+            mm2px(Vec(13.3285,46.4665)), module, Polyphemus2::VOCTP_PARAM));
 
-        addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(GRID(0,3)), module, Polyphemus2::VOCTP_PARAM));
         addParam(createParamCentered<OrderKnob>(
-            mm2px(GRID(0,1.5)), module, Polyphemus2::ORDER_PARAM));
+            mm2px(Vec(17.7425,27.1265)), module, Polyphemus2::ORDER_PARAM));
 
-        addInput(createInputCentered<PJ301MPort>(mm2px(GRID(0.5,4)), module, Polyphemus2::VOCT0_INPUT));
-        addInput(createInputCentered<PJ301MPort>(mm2px(GRID(2.5,4)), module, Polyphemus2::ENV_INPUT));
+        addParam(createParamCentered<RoundBlackKnob>(
+            mm2px(GRID(1.5,1)), module, Polyphemus2::KNEE_PARAM));
+
+         addParam(createParamCentered<RoundBlackKnob>(
+            mm2px(Vec(53.4875,27.1265)), module, Polyphemus2::ENVP_PARAM));
+
+        addParam(createParamCentered<RoundBlackKnob>(
+            mm2px(Vec(57.9015,46.4665)), module, Polyphemus2::GAIN_PARAM));
+
+        addInput(createInputCentered<PJ301MPort>(
+            mm2px(Vec(25.698,61.976)), module, Polyphemus2::VOCT0_INPUT));
+        addInput(createInputCentered<PJ301MPort>(
+            mm2px(Vec(45.543,61.976)), module, Polyphemus2::ENV_INPUT));
 
         addInput(createInputCentered<PJ301MPort>(mm2px(GRID(0.5,5)), module, Polyphemus2::IN0_INPUT));
         addInput(createInputCentered<PJ301MPort>(mm2px(GRID(0.5,6)), module, Polyphemus2::IN1_INPUT));

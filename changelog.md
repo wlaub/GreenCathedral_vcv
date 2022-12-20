@@ -5,7 +5,7 @@
   * Remove the cruft
 * Remove redundant sections on Polyphemus II
 * Rework Polyphemus II panel
-
+  * Now with fancy animation
 
 ### 2.4.1
 

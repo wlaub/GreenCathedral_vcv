@@ -1,6 +1,11 @@
 {
 "panels": [
-    ["Default", "PolyphemusII.svg"]
+    ["Default", "PolyphemusII.svg"],
+    ["a", "polyphemusii_a.png"],
+    ["b", "polyphemusii_b.png"],
+    ["c", "polyphemusii_c.png"],
+    ["d", "polyphemusii_d.png"]
+  
     ],
 "default": "Default"
 }
