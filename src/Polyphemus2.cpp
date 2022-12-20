@@ -8,7 +8,7 @@
 
 #define MAX_CHANNELS 16
 
-#define ENV_MAX 19.f
+#define ENV_MAX 15.f
 
 struct PoleFilter {
 
@@ -221,10 +221,8 @@ struct Polyphemus2Widget : PngModuleWidget {
     float eye_stroke = 2;
     float ewsq = eye_radius*eye_radius*4;
 
-    void draw(const DrawArgs& args)
+    void animate_marble_eye(const DrawArgs& args)
     {
-        PngModuleWidget::draw(args);
-
         float alpha = 1;
         if(module)
         {
@@ -336,13 +334,137 @@ struct Polyphemus2Widget : PngModuleWidget {
             nvgStrokeColor(args.vg, color);
             nvgStrokeWidth(args.vg, eye_stroke/2);
             nvgStroke(args.vg);
+        }
+        nvgRestore(args.vg);
+    }
+
+    void _draw_ray(const DrawArgs& args, int n, float a, float inner_radius, float outer_radius, float alpha, float over)
+    {
+        if(over >= n)
+        {
+            float alpha_eff = 1;
+            if(over == n)
+            {
+                alpha_eff=alpha;
+            }
+            float s = cos(a);
+            float c = -sin(a);
+            float dx = c*(1-alpha_eff)*inner_radius+c*alpha_eff*outer_radius;
+            float dy = s*(1-alpha_eff)*inner_radius+s*alpha_eff*outer_radius;
+            nvgMoveTo(args.vg, eye_x, eye_y);
+            nvgLineTo(args.vg, eye_x+dx, eye_y+dy);
+        }
+    }
 
 
+
+    void animate_radiant_eye(const DrawArgs& args)
+    {
+        float alpha = 1;
+        if(module)
+        {
+            alpha = ((Polyphemus2*)module)->env_alpha;
         }
 
+        //alpha goes 0 -> 2 -> 0
+        float over = 0;
+        alpha = modf(alpha, &over);
 
+        //Normalize 0 to 1       
+//        float color_scale = 0;
+        float color_scale = 0.9*(std::max(over-8, 0.f))/(floor(ENV_MAX)-8);
+        NVGcolor color = nvgRGBf(color_scale,color_scale,color_scale);
+
+        nvgSave(args.vg);
+
+        float pupil_h = eye_stroke/4;
+        //Draw eye
+        nvgBeginPath(args.vg);
+        if(over == 0)
+        {
+            if(alpha <= 0)
+            {   //Horizontal line
+                nvgMoveTo(args.vg, eye_x-eye_radius, eye_y);
+                nvgLineTo(args.vg, eye_x+eye_radius, eye_y);
+            }
+            else if(alpha <= 1)
+            {   //Horizontal Open
+                float a = alpha*M_PI/2;
+                float h = eye_radius/tan(a);
+                float r = sqrt(ewsq+h*h*4)/2;
+                pupil_h = r-h+eye_stroke/4;
+     
+                nvgArc(args.vg, eye_x, eye_y+h, r, 3*M_PI/2-a, 3*M_PI/2+a, NVG_CW);
+                nvgArc(args.vg, eye_x, eye_y-h, r, M_PI/2-a, M_PI/2+a, NVG_CW);
+            }
+        }
+        else
+        {
+            nvgCircle(args.vg, eye_x, eye_y, eye_radius);
+        }
+
+        nvgLineJoin(args.vg, NVG_BEVEL);
+        nvgStrokeColor(args.vg, color);
+        nvgStrokeWidth(args.vg, eye_stroke);
+        nvgStroke(args.vg);
+
+        nvgClosePath(args.vg);
+
+        //Draw pupil
+        float pupil_radius = eye_stroke*2;
+        nvgBeginPath(args.vg);
+        nvgCircle(args.vg, eye_x, eye_y, pupil_radius);
+        if(over==0 && alpha < 1 )
+        {
+            nvgScissor(args.vg, 
+                    eye_x-eye_radius/2, eye_y-pupil_h, 
+                    eye_radius, pupil_h*2
+                            );
+        }
+        nvgFillColor(args.vg, color);
+        nvgFill(args.vg);
+        nvgClosePath(args.vg);
         nvgRestore(args.vg);
-               
+
+        //Draw Rays
+        nvgBeginPath(args.vg);
+
+        for(int n=1; n <= std::min(over,7.f); ++n)
+        {
+            _draw_ray(args, n, 2*(n-1)*M_PI/7, pupil_radius, eye_radius, alpha, over);
+        }
+
+        nvgLineJoin(args.vg, NVG_BEVEL);
+        nvgStrokeColor(args.vg, color);
+        nvgStrokeWidth(args.vg, eye_stroke);
+        nvgStroke(args.vg);
+
+        nvgClosePath(args.vg);
+
+        nvgBeginPath(args.vg);
+
+        float outer_radius = eye_radius*2-mm2px(1);
+        for(int n=8; n <= over; ++n)
+        {
+            _draw_ray(args, n, 2*(n-1)*M_PI/7, eye_radius, outer_radius, alpha, over);
+        }
+
+        nvgLineJoin(args.vg, NVG_BEVEL);
+        nvgStrokeColor(args.vg, color);
+        nvgStrokeWidth(args.vg, eye_stroke/2);
+        nvgStroke(args.vg);
+
+        nvgClosePath(args.vg);
+
+
+
+    }
+
+    void draw(const DrawArgs& args)
+    {
+        PngModuleWidget::draw(args);
+
+        animate_radiant_eye(args);              
 
     } 
 
