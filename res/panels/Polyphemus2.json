@@ -1,10 +1,9 @@
 {
 "panels": [
     ["Default", "PolyphemusII.svg"],
-    ["a", "polyphemusii_a.png"],
-    ["b", "polyphemusii_b.png"],
-    ["c", "polyphemusii_c.png"],
-    ["d", "polyphemusii_d.png"]
+    ["Fancy", "polyphemusii_b.png"],
+    ["Alt 1", "polyphemusii_a.png"],
+    ["Alt 2", "polyphemusii_d.png"]
   
     ],
 "default": "Default"

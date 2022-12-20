@@ -472,6 +472,17 @@ struct Polyphemus2Widget : PngModuleWidget {
 
     } 
 
+
+    void appendContextMenu(Menu* menu) override {
+            Polyphemus2* module = dynamic_cast<Polyphemus2*>(this->module);
+
+            menu->addChild(new MenuEntry);
+
+            panel_select_menu(menu, module);
+
+        }
+
+
 	Polyphemus2Widget(Polyphemus2 *module) {
 		setModule(module);
 
@@ -494,10 +505,10 @@ struct Polyphemus2Widget : PngModuleWidget {
             mm2px(GRID(1.5,1)), module, Polyphemus2::KNEE_PARAM));
 
          addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(Vec(53.4875,27.1265)), module, Polyphemus2::ENVP_PARAM));
+            mm2px(Vec(53.4875,27.1265)), module, Polyphemus2::GAIN_PARAM));
 
         addParam(createParamCentered<RoundBlackKnob>(
-            mm2px(Vec(57.9015,46.4665)), module, Polyphemus2::GAIN_PARAM));
+            mm2px(Vec(57.9015,46.4665)), module, Polyphemus2::ENVP_PARAM));
 
         addInput(createInputCentered<PJ301MPort>(
             mm2px(Vec(25.698,61.976)), module, Polyphemus2::VOCT0_INPUT));
