@@ -152,6 +152,10 @@ struct Polyphemus2 : PngModule {
                         max_alpha = t;
                     }
                 }
+                else
+                {
+                    max_alpha = 1;
+                }
 
                 float pitch = params[VOCTP_PARAM].getValue()/12.f;
                 pitch += inputs[VOCT0_INPUT].getVoltage(vc);
