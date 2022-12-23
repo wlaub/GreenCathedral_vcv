@@ -89,10 +89,11 @@ struct Polyphemus2 : PngModule {
 
     double get_r(double wc, double N)
     {
-        //Kc must be 0-1 gain^2 at cutoff frequency 
-        double kc = 1/pow(Hc, 2.f/floor(N));
-        double a = 1-kc; //a = c
-        double b = 2*(kc-cos(wc));
+        //Kc must is gain^2 at cutoff frequency, must be 0-1
+        double kc = pow(Hc, 2.f/floor(N));
+        double a = kc-1; //a = c
+        double b = 2*(1-kc*cos(wc));
+ 
         if(b > 2*a)
         {
             return (-b + sqrt(b*b-4*a*a))/(2*a);
@@ -101,7 +102,30 @@ struct Polyphemus2 : PngModule {
         {
             return 0;
         }
+
     }
+
+    double get_k_hp(double r, double N)
+    {
+        return 1+r;
+    }
+
+    double get_r_hp(double wc, double N)
+    {
+        double kc = pow(Hc, 2.f/floor(N));
+        double a = kc-1; //a = c
+        double b = 2*(-1-kc*cos(wc));
+        if(abs(b) > abs(2*a))
+        {
+            return (-b - sqrt(b*b-4*a*a))/(2*a);
+        }
+        else
+        {
+            return 0;
+        }
+
+    }
+
 
 
 	void process(const ProcessArgs &args) override {
@@ -165,10 +189,11 @@ struct Polyphemus2 : PngModule {
 
                 rvals[c] = get_r(wc, N);
                 kvals[c] = get_k(rvals[c], N);
+//                printf("%f: %f, %f\n", wc, rvals[0], kvals[0]);
             }
             env_alpha = max_alpha;
 
-//            printf("%f: %f, %f\n", wc, r, k);
+
             for(int j = 0; j < 3; ++j)
             {
                 int channels = inputs[IN0_INPUT+j].getChannels();

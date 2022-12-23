@@ -5,7 +5,6 @@ Note: this plugin is not yet ready for release.
 ## TODO
 
 * Rethink Tia design
-* Port Prometheus II w/ updated panel/UI to better match hardware
 * QMod II
 
 ## MVP
@@ -16,6 +15,88 @@ Note: this plugin is not yet ready for release.
 * Once I
 * Tia/Mat I (maybe)
 * Labels and panels for all of the above
+
+## Target Modules
+
+| Type | Name |
+|-|-|
+| Oscillator | Prometheus II |
+| Filter | Polyphemus II |
+| LFO | Cobalt I |
+| Utility | Once I |
+| Chromatic Mixer | Tiamat N |
+| Frequency Mixer | (QMOD) II |
+| Delay | Unwound Timeloop |
+
+## TODO
+
+### Infrastructure
+
+* Trimmer knob widget
+* Encoder knob widget
+* Visually less ugly of label panels would be nice
+* Implement actual documentation of all modules
+
+### Prometheus II
+
+* Design 10 HP Panel
+* Port dev version
+* Update UI to match HW
+* Update coupling filter to match HW (with better knob curve)
+* Implement adaptive LFSR overclocking
+
+### Polyphemus II
+
+* Review
+* I wonder what would happen if you had some 0's zoom up toward the unit circle at the non-envelope cutoff frequency of the filter? Like some kind of inverse resonance above the knee.
+  * It basically just becomes a high-pass filter
+* I wonder if I can just add another pole on the negative real axis to make it a bandpass
+  * The way these filters work, you need low lpf cutoff and high hps cutoff to get any significant attenuation at the opposite end of the spectrum, so this isn't really viable.
+* A complex-conjugate pair bpf is not too hard to normalize. Any sort of bandwidth control would be a pain in the ass to compute, but precise bw control isn't needed here since the center frequency can be set directly.
+* Maybe a pingable bandpass mode that puts the envelope on the input instead of the cutoff
+  * Set the eye to always fully open, but animate the rays
+
+
+
+### Cobalt I
+
+* Update label panel font/positioning for clarity?
+* Move selection menus into dropdows line panel select
+
+#### Sixty I
+
+* Create label panel
+* Maybe look into allowing other modules to use this as a waveform source
+
+### Once I
+
+* Think about a better name?
+* Maybe a very simple label panel.
+* Move selection menus into dropdows line panel select
+
+### QMod II
+
+* Come up with a real name
+* Design
+  * Needs built-in image/harmonic filters
+  * Doesn't need to be 4 copies on one panel
+  * Existing ext carrier input is useless
+    * Maybe implement hilbert transform filter
+    * Maybe just implement a small LFO with a few different waveforms
+    * Cobalt should have built-in quadrature outputs?
+    * Maybe it could use Sixty as an expander that does different carrier waveforms instead
+  * Maybe separate controls for modulatre/demodulate carriers, but derive them from the same phase accumulator so their relative phases will always be the same when they have the same frequency
+    * Maybe carrier coherence could be a menu option 
+
+### Tiamat
+
+* Review UI issues
+  * Multiple channels with different routing and different xfade CV's
+* Bigger buttons maybe to help some with mouse problems?
+
+### Unwound Timeloop
+
+* Solve UI design
 
 ## Panels
 
